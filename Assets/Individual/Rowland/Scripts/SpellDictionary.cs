@@ -14,11 +14,19 @@ namespace Rowland
 
     public class SpellDictionary : MonoBehaviour
     {
+        public static SpellDictionary Instance { get; private set; }
         private Dictionary<string, (bool unlocked, bool persistant)> spells;
         [SerializeField] private List<ItemEntry> entries = new List<ItemEntry>();
 
         private void Awake()
         {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+
             spells = new Dictionary<string, (bool unlocked, bool persistant)>();
             foreach (ItemEntry entry in entries)
             {
